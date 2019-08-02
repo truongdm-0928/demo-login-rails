@@ -1,9 +1,10 @@
 class SessionController < ApplicationController
+  skip_before_action :require_login, only: [:new, :create]
   def new
   end
 
   def create
-  	user = User.find_by name: params[:session][:name].downcase
+    user = User.find_by name: params[:session][:name].downcase
     if user && user.authenticate(params[:session][:password])
       flash[:success] = "Login success"
       log_in user
